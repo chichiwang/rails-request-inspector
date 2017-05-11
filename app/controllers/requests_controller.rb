@@ -1,13 +1,21 @@
 class RequestsController < ApplicationController
   def index
-    @headers = http_envs
-    render json: JSON.pretty_generate(@headers)
+    log_request_data
+    render json: JSON.pretty_generate(request_data)
   end
 
   private
 
-  def log_request_headers
-    logger.warn("request.headers >> #{http_envs}")
+  def request_data
+    @request_data ||= {
+      headers: http_envs,
+      method: request.method,
+      url: request.original_url
+    }
+  end
+
+  def log_request_data
+    logger.warn("-- [Request Data] >>\n#{request_data}\n-- <<")
   end
 
   def http_envs
