@@ -10,7 +10,9 @@ class RequestsController < ApplicationController
     @request_data ||= {
       headers: http_envs,
       method: request.method,
-      url: request.original_url
+      url: request.original_url,
+      ip: request.ip,
+      remote_ip: request.remote_ip
     }
   end
 
